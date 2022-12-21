@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:recommend_movie/core/view/home/view/video_player.dart';
+import 'package:video_player/video_player.dart';
 
 final List<String> titles = [
   "FANTASTİK",
@@ -16,45 +16,15 @@ final List<String> titles = [
 BoxFit box = BoxFit.fill;
 const String boxfit = 'fill';
 
-
-
-final List<Widget> images = [
-  const AssetPlayer(
-    mov: 'assets/video/video.mov',
-  ),
-  const AssetPlayer(
-    mov: 'assets/video/video.mov',
-    isPlay: true,
-  ),
-  const AssetPlayer(
-    isPlay: true,
-    mov: 'assets/video/video.mov',
-  ),
-  const AssetPlayer(
-    isPlay: true,
-    mov: 'assets/video/video.mov',
-  ),
-  const AssetPlayer(
-    isPlay: true,
-    mov: 'assets/video/video.mov',
-  ),
-  const AssetPlayer(
-    isPlay: true,
-    mov: 'assets/video/video.mov',
-  ),
-  const AssetPlayer(
-    mov: 'assets/video/video.mov',
-  ),
-  const AssetPlayer(
-    isPlay: true, // images> 0 index > widget> isPlay= true or false
-    mov: 'assets/video/video.mov',
-  ),
-  const AssetPlayer(
-    isPlay: true,
-    mov: 'assets/video/video.mov',
-  ),
-  const AssetPlayer(
-    isPlay: true,
-    mov: 'assets/video/video.mov',
-  ),
+final List<VideoPlayerController> movie = [
+  VideoPlayerController.asset('assets/video/video.mov'),
+  VideoPlayerController.asset('assets/video/video.mov'),
+  VideoPlayerController.asset('assets/video/video.mov'),
+  VideoPlayerController.asset('assets/video/video.mov'),
+  VideoPlayerController.asset('assets/video/video.mov'),
+  VideoPlayerController.asset('assets/video/video.mov'),
+  VideoPlayerController.asset('assets/video/video.mov'),
+  VideoPlayerController.asset('assets/video/video.mov'),
+  VideoPlayerController.asset('assets/video/video.mov'),
+  VideoPlayerController.asset('assets/video/video.mov'),
 ];

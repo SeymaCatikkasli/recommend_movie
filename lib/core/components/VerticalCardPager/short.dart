@@ -56,7 +56,7 @@ class _VerticalCardPagerState extends State<VerticalCardPager> {
     });
     for (var i = 0; i < widget.images.length; i++) {
       _controller.add(widget.images[i]
-        ..setLooping(true)
+      ..setLooping(true)
         ..initialize().then((_) {
           // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
           setState(() {});
@@ -93,17 +93,7 @@ class _VerticalCardPagerState extends State<VerticalCardPager> {
         },
         child: Stack(
           children: [
-            CardControllerWidget(
-              titles: widget.titles,
-              images: widget.images,
-              textStyle: widget.textStyle,
-              currentPostion: currentPosition,
-              cardViewPagerHeight: constraints.maxHeight,
-              cardViewPagerWidth: constraints.maxWidth,
-              align: widget.align,
-              pages: pages,
-              controller: _controller,
-            ),
+         
             Positioned.fill(
               child: PageView.builder(
                 scrollDirection: Axis.vertical,
@@ -114,7 +104,8 @@ class _VerticalCardPagerState extends State<VerticalCardPager> {
                       ? _controller[index].play()
                       : _controller[index].pause();
 
-                  return Container();
+             
+                  return VideoPlayer(_controller[index]);
                 },
               ),
             )
@@ -267,10 +258,7 @@ class _CardControllerWidgetState extends State<CardControllerWidget> {
             height: cardHeight,
             child: Stack(
               children: <Widget>[
-                Positioned.fill(
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: VideoPlayer(widget.controller[i]))),
+                Positioned.fill(child: VideoPlayer(widget.controller[i])),
                 Align(
                     child: Text(
                   widget.titles![i],
