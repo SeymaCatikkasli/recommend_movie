@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:recommend_movie/core/view/home/view/video_player.dart';
+import 'package:video_player/video_player.dart';
 
 typedef PageChangedCallback = void Function(double? page);
 typedef PageSelectedCallback = void Function(int index);
@@ -43,11 +45,15 @@ class _VerticalCardPagerState extends State<VerticalCardPager> {
     controller = PageController(initialPage: widget.initialPage);
 
     controller.addListener(() {
+      
       setState(() {
+       
         currentPosition = controller.page ?? 0;
-
+      
         if (widget.onPageChanged != null) {
-          Future(() => widget.onPageChanged!(currentPosition));
+          Future(() => widget.onPageChanged!(currentPosition)
+          );
+      
         }
       });
     });
@@ -77,20 +83,13 @@ class _VerticalCardPagerState extends State<VerticalCardPager> {
               controller.animateToPage(goToPage,
                   duration: const Duration(milliseconds: 300),
                   curve: Curves.easeInOutExpo);
+                   
             }
           }
         },
         child: Stack(
           children: [
-            CardControllerWidget(
-              titles: widget.titles,
-              images: widget.images,
-              textStyle: widget.textStyle,
-              currentPostion: currentPosition,
-              cardViewPagerHeight: constraints.maxHeight,
-              cardViewPagerWidth: constraints.maxWidth,
-              align: widget.align,
-            ),
+           
             Positioned.fill(
               child: PageView.builder(
                 scrollDirection: Axis.vertical,
@@ -98,6 +97,7 @@ class _VerticalCardPagerState extends State<VerticalCardPager> {
                 controller: controller,
                 itemBuilder: (context, index) {
                   return Container();
+                  
                 },
               ),
             ),
@@ -202,7 +202,7 @@ class CardControllerWidget extends StatelessWidget {
   final List? titles;
   final List? images;
 
-  const CardControllerWidget({
+  const CardControllerWidget({super.key, 
     this.titles,
     this.images,
     this.cardViewPagerWidth,

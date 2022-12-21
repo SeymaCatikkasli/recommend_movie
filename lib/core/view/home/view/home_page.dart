@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../components/VerticalCardPager/Model/model_vertical_card_pager.dart';
-import '../../../components/VerticalCardPager/vertical_card_pager.dart';
-import '../../../components/text/primary_text.dart';
+import 'package:recommend_movie/core/view/home/view/home_page_screen.dart';
+import 'package:recommend_movie/core/view/home/view/search_screen.dart';
+import 'package:recommend_movie/core/view/home/view/setting_screen.dart';
+import 'package:diamond_bottom_bar/diamond_bottom_bar.dart';
 
 const title1 = 'Keşfetmeye Ne Dersin ?';
 
@@ -13,43 +14,39 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  
+  late Widget _selectedWidget;
+  int _selectedIndex = 0;
+  @override
+  void initState() {
+    _selectedWidget =const  HomePageScreen();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
+      bottomNavigationBar: DiamondBottomNavigation(
+          itemIcons: const [Icons.home, Icons.settings],
+          centerIcon: Icons.search,
+          selectedIndex: _selectedIndex,
+          onItemPressed: onItemPressed),
       backgroundColor: const Color.fromRGBO(236, 247, 254, 1),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-             
-              const Padding(
-                padding: EdgeInsets.all(14.0),
-                child: PrimaryTextWidget(
-                  title: title1,
-                  fontsize: 30,
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height
-              ,
-              child: SizedBox(width: double.infinity,
-              child: VerticalCardPager(titles: titles,textStyle: const TextStyle(color: Colors.white,),
-              
-                images: images,
-                onPageChanged: (page) {},
-                align: ALIGN.CENTER,
-                onSelectedItem: (index) {},   ),),),
-                
-             
-             
-            ],
-          ),
-        ),
-      ),
+      body: _selectedWidget,
     );
   }
+  void onItemPressed(index){
+  setState(()
+  {
+    _selectedIndex=index;
+    if(index==0){
+      _selectedWidget=const HomePageScreen();
+    }
+    else if (index==1){
+        _selectedWidget= const SearchScreen();
+    }
+    else if(index==2){
+       _selectedWidget=const SettingScreen();
+    }
+  });
+}
 }

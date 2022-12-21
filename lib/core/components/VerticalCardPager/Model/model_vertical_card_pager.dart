@@ -13,49 +13,48 @@ final List<String> titles = [
   "GERİLİM",
   "BİLİM KURGU",
 ];
-BoxFit box =BoxFit.fill;
-const String boxfit='fill';
+BoxFit box = BoxFit.fill;
+const String boxfit = 'fill';
+
+
+
 final List<Widget> images = [
-  Container(
-   decoration:  BoxDecoration(
-    
-    image: const DecorationImage(image: AssetImage('assets/img/fantastik.jpeg'),),
-   borderRadius: BorderRadius.circular(30.0),
-   ),
-    child: Image.asset('assets/img/fantastik.jpeg'),
+  const AssetPlayer(
+    mov: 'assets/video/video.mov',
   ),
-  const AssetPlayer(),
-  Image.asset(
-    
-    'assets/img/macera.jpeg',
-    fit: BoxFit.fill,
+  const AssetPlayer(
+    mov: 'assets/video/video.mov',
+    isPlay: true,
   ),
-  Image.asset(
-    'assets/img/komedi.jpeg',
-    fit: box,
+  const AssetPlayer(
+    isPlay: true,
+    mov: 'assets/video/video.mov',
   ),
- Image.asset(
-   'assets/img/dram.jpeg',
-  fit: box,
- ),
-  Image.asset(
-    'assets/img/suc.jpeg',
-    fit: box,
+  const AssetPlayer(
+    isPlay: true,
+    mov: 'assets/video/video.mov',
   ),
-   Image.asset(
-     'assets/img/korku.jpeg',
-     fit: box,
-   ),
-   Image.asset(
-     'assets/img/romantik.jpeg',
-     fit: box,
-   ),
-   Image.asset(
-     'assets/img/gerilim.jpeg',
-    fit: box,
-   ),
-   Image.asset(
-     'assets/img/bilimkurgu.jpeg',
-    fit: box,
-   ),
+  const AssetPlayer(
+    isPlay: true,
+    mov: 'assets/video/video.mov',
+  ),
+  const AssetPlayer(
+    isPlay: true,
+    mov: 'assets/video/video.mov',
+  ),
+  const AssetPlayer(
+    mov: 'assets/video/video.mov',
+  ),
+  const AssetPlayer(
+    isPlay: true, // images> 0 index > widget> isPlay= true or false
+    mov: 'assets/video/video.mov',
+  ),
+  const AssetPlayer(
+    isPlay: true,
+    mov: 'assets/video/video.mov',
+  ),
+  const AssetPlayer(
+    isPlay: true,
+    mov: 'assets/video/video.mov',
+  ),
 ];
