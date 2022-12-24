@@ -6,9 +6,9 @@ import 'package:video_player/video_player.dart';
 typedef PageChangedCallback = void Function(double? page);
 typedef PageSelectedCallback = void Function(int index);
 
-enum ALIGN { LEFT, CENTER, RIGHT }
+enum ALIGN { left, center, right }
 
-class VerticalCardPager extends StatefulWidget {
+class ShortCardPager extends StatefulWidget {
   final List<String> titles;
   final List<VideoPlayerController> images;
   final PageChangedCallback? onPageChanged;
@@ -17,21 +17,23 @@ class VerticalCardPager extends StatefulWidget {
   final int initialPage;
   final ALIGN align;
 
-  const VerticalCardPager(
+  // ignore: use_key_in_widget_constructors
+  const ShortCardPager(
       {required this.titles,
       required this.images,
       this.onPageChanged,
       this.textStyle,
       this.initialPage = 2,
       this.onSelectedItem,
-      this.align = ALIGN.CENTER})
+      this.align = ALIGN.center,})
       : assert(titles.length == images.length);
 
   @override
-  _VerticalCardPagerState createState() => _VerticalCardPagerState();
+  // ignore: library_private_types_in_public_api
+  _ShortCardPagerState createState() => _ShortCardPagerState();
 }
 
-class _VerticalCardPagerState extends State<VerticalCardPager> {
+class _ShortCardPagerState extends State<ShortCardPager> {
   bool isScrolling = false;
   double? currentPosition;
   PageController? controller;
@@ -56,7 +58,7 @@ class _VerticalCardPagerState extends State<VerticalCardPager> {
     });
     for (var i = 0; i < widget.images.length; i++) {
       _controller.add(widget.images[i]
-        ..setLooping(true)
+      ..setLooping(true)
         ..initialize().then((_) {
           // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
           setState(() {});
@@ -93,17 +95,7 @@ class _VerticalCardPagerState extends State<VerticalCardPager> {
         },
         child: Stack(
           children: [
-            CardControllerWidget(
-              titles: widget.titles,
-              images: widget.images,
-              textStyle: widget.textStyle,
-              currentPostion: currentPosition,
-              cardViewPagerHeight: constraints.maxHeight,
-              cardViewPagerWidth: constraints.maxWidth,
-              align: widget.align,
-              pages: pages,
-              controller: _controller,
-            ),
+         
             Positioned.fill(
               child: PageView.builder(
                 scrollDirection: Axis.vertical,
@@ -114,7 +106,8 @@ class _VerticalCardPagerState extends State<VerticalCardPager> {
                       ? _controller[index].play()
                       : _controller[index].pause();
 
-                  return Container();
+             
+                  return VideoPlayer(_controller[index]);
                 },
               ),
             )
@@ -150,13 +143,13 @@ class _VerticalCardPagerState extends State<VerticalCardPager> {
     double? position = 0;
 
     switch (widget.align) {
-      case ALIGN.LEFT:
+      case ALIGN.left:
         position = 0;
         break;
-      case ALIGN.CENTER:
+      case ALIGN.center:
         position = (cardViewPagerWidth / 2) - (cardWidth / 2);
         break;
-      case ALIGN.RIGHT:
+      case ALIGN.right:
         position = cardViewPagerWidth - cardWidth;
         break;
     }
@@ -267,10 +260,7 @@ class _CardControllerWidgetState extends State<CardControllerWidget> {
             height: cardHeight,
             child: Stack(
               children: <Widget>[
-                Positioned.fill(
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: VideoPlayer(widget.controller[i]))),
+                Positioned.fill(child: VideoPlayer(widget.controller[i])),
                 Align(
                     child: Text(
                   widget.titles![i],
@@ -383,13 +373,13 @@ class _CardControllerWidgetState extends State<CardControllerWidget> {
     double position = 0;
 
     switch (widget.align!) {
-      case ALIGN.LEFT:
+      case ALIGN.left:
         position = 0;
         break;
-      case ALIGN.CENTER:
+      case ALIGN.center:
         position = (widget.cardViewPagerWidth! / 2) - (cardWidth / 2);
         break;
-      case ALIGN.RIGHT:
+      case ALIGN.right:
         position = widget.cardViewPagerWidth! - cardWidth;
         break;
     }

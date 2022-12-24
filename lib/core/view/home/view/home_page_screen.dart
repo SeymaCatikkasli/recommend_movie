@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:recommend_movie/core/view/home/view/home_page.dart';
 
-import '../../../components/VerticalCardPager/Model/model_vertical_card_pager.dart';
-import '../../../components/VerticalCardPager/vertical_card_pager.dart';
+import '../../../components/vertical_card_pager/Model/model_vertical_card_pager.dart';
+import '../widgets/vertical_card_pager.dart';
 import '../../../components/text/primary_text.dart';
+import '../../movie_detail.dart/model/dummy_data.dart';
+import '../../movie_detail.dart/view/movie_detail.dart';
 
-class HomePageScreen extends StatelessWidget {
+class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key});
 
+  @override
+  State<HomePageScreen> createState() => _HomePageScreenState();
+}
+
+class _HomePageScreenState extends State<HomePageScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -23,15 +30,19 @@ class HomePageScreen extends StatelessWidget {
           Expanded(
             child: VerticalCardPager(
               titles: titles,
-              textStyle: const TextStyle(
-                color: Colors.white,
-              ),
+              
               images: movie,
               onPageChanged: (page) {
                
               },
               onSelectedItem: (index) {
-               
+               Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (ctx) => MovieDetailScreen(
+                      movieModel: movies[index],
+                    ),
+                  ),
+                );
               },
             ),
           ),

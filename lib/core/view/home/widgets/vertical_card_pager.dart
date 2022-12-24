@@ -1,33 +1,34 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:recommend_movie/core/components/text/primary_text.dart';
 import 'package:video_player/video_player.dart';
 
 typedef PageChangedCallback = void Function(double? page);
 typedef PageSelectedCallback = void Function(int index);
 
-enum ALIGN { LEFT, CENTER, RIGHT }
+enum ALIGN { left, center ,right }
 
 class VerticalCardPager extends StatefulWidget {
   final List<String> titles;
   final List<VideoPlayerController> images;
   final PageChangedCallback? onPageChanged;
   final PageSelectedCallback? onSelectedItem;
-  final TextStyle? textStyle;
   final int initialPage;
   final ALIGN align;
 
+  // ignore: use_key_in_widget_constructors
   const VerticalCardPager(
       {required this.titles,
       required this.images,
       this.onPageChanged,
-      this.textStyle,
       this.initialPage = 2,
       this.onSelectedItem,
-      this.align = ALIGN.CENTER})
+      this.align = ALIGN.center, })
       : assert(titles.length == images.length);
 
   @override
+  // ignore: library_private_types_in_public_api
   _VerticalCardPagerState createState() => _VerticalCardPagerState();
 }
 
@@ -56,7 +57,7 @@ class _VerticalCardPagerState extends State<VerticalCardPager> {
     });
     for (var i = 0; i < widget.images.length; i++) {
       _controller.add(widget.images[i]
-      ..setLooping(true)
+        ..setLooping(true)
         ..initialize().then((_) {
           // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
           setState(() {});
@@ -93,7 +94,16 @@ class _VerticalCardPagerState extends State<VerticalCardPager> {
         },
         child: Stack(
           children: [
-         
+            CardControllerWidget(
+              titles: widget.titles,
+              images: widget.images,
+              currentPostion: currentPosition,
+              cardViewPagerHeight: constraints.maxHeight,
+              cardViewPagerWidth: constraints.maxWidth,
+              align: widget.align,
+              pages: pages,
+              controller: _controller,
+            ),
             Positioned.fill(
               child: PageView.builder(
                 scrollDirection: Axis.vertical,
@@ -104,8 +114,7 @@ class _VerticalCardPagerState extends State<VerticalCardPager> {
                       ? _controller[index].play()
                       : _controller[index].pause();
 
-             
-                  return VideoPlayer(_controller[index]);
+                  return Container();
                 },
               ),
             )
@@ -141,13 +150,13 @@ class _VerticalCardPagerState extends State<VerticalCardPager> {
     double? position = 0;
 
     switch (widget.align) {
-      case ALIGN.LEFT:
+      case ALIGN.left:
         position = 0;
         break;
-      case ALIGN.CENTER:
+      case ALIGN.center:
         position = (cardViewPagerWidth / 2) - (cardWidth / 2);
         break;
-      case ALIGN.RIGHT:
+      case ALIGN.right:
         position = cardViewPagerWidth - cardWidth;
         break;
     }
@@ -204,7 +213,6 @@ class CardControllerWidget extends StatefulWidget {
   final double cardMaxHeight;
   final double cardViewPagerHeight;
   final double? cardViewPagerWidth;
-  final TextStyle? textStyle;
   final ALIGN? align;
   final int pages;
   final List? titles;
@@ -219,7 +227,6 @@ class CardControllerWidget extends StatefulWidget {
       required this.cardViewPagerHeight,
       this.currentPostion,
       this.align,
-      this.textStyle,
       required this.pages,
       required this.controller})
       : cardMaxHeight = cardViewPagerHeight * (1 / 2),
@@ -233,13 +240,6 @@ class _CardControllerWidgetState extends State<CardControllerWidget> {
   @override
   Widget build(BuildContext context) {
     List<Widget> cardList = [];
-    TextStyle? titleTextStyle;
-
-    if (widget.textStyle != null) {
-      titleTextStyle = widget.textStyle;
-    } else {
-      titleTextStyle = Theme.of(context).textTheme.headline1;
-    }
 
     for (int i = 0; i < widget.images!.length; i++) {
       var cardWidth = max(
@@ -258,13 +258,12 @@ class _CardControllerWidgetState extends State<CardControllerWidget> {
             height: cardHeight,
             child: Stack(
               children: <Widget>[
-                Positioned.fill(child: VideoPlayer(widget.controller[i])),
+                Positioned.fill(
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: VideoPlayer(widget.controller[i]))),
                 Align(
-                    child: Text(
-                  widget.titles![i],
-                  style: titleTextStyle!.copyWith(fontSize: getFontSize(i)),
-                  textAlign: TextAlign.center,
-                )),
+                    child: PrimaryTextWidget(title: widget.titles![i], fontsize: getFontSize(i)) )
               ],
             ),
           ),
@@ -371,13 +370,13 @@ class _CardControllerWidgetState extends State<CardControllerWidget> {
     double position = 0;
 
     switch (widget.align!) {
-      case ALIGN.LEFT:
+      case ALIGN.left:
         position = 0;
         break;
-      case ALIGN.CENTER:
+      case ALIGN.center:
         position = (widget.cardViewPagerWidth! / 2) - (cardWidth / 2);
         break;
-      case ALIGN.RIGHT:
+      case ALIGN.right:
         position = widget.cardViewPagerWidth! - cardWidth;
         break;
     }
