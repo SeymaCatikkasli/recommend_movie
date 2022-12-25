@@ -22,7 +22,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color.fromRGBO(37, 23, 73,1),
+        backgroundColor: const Color.fromARGB(255, 36, 33, 44),
         extendBodyBehindAppBar: true,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -64,10 +64,10 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                   _MovieInfoCard(
                     child: Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.star,
                           size: 16,
-                          color: Colors.yellow[800],
+                          color: Color.fromARGB(255, 214, 187, 143),
                         ),
                         const SizedBox(width: 5),
                         Text(

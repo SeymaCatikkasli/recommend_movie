@@ -5,7 +5,7 @@ import 'package:diamond_bottom_bar/diamond_bottom_bar.dart';
 
 import '../../Shorts/view/shorts_screen.dart';
 
-const title1 = 'Keşfetmeye Ne Dersin ?';
+const title1 = 'Moduna Göre Seç';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -27,12 +27,12 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: DiamondBottomNavigation(
-          itemIcons: const [Icons.home, Icons.settings],
+          itemIcons: const [Icons.home_outlined, Icons.bookmarks_outlined],
 
-          centerIcon: Icons.movie,
+          centerIcon: Icons.movie_filter_outlined,
           selectedIndex: _selectedIndex,
           onItemPressed: onItemPressed),
-      backgroundColor: const Color.fromRGBO(236, 247, 254, 1),
+      backgroundColor: const Color.fromARGB(255, 254, 206, 221),
       body: _selectedWidget,
     );
   }

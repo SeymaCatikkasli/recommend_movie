@@ -1,13 +1,14 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:recommend_movie/core/components/text/primary_text.dart';
 import 'package:video_player/video_player.dart';
 
 typedef PageChangedCallback = void Function(double? page);
 typedef PageSelectedCallback = void Function(int index);
 
-enum ALIGN { left, center ,right }
+enum ALIGN { left, center, right }
 
 class VerticalCardPager extends StatefulWidget {
   final List<String> titles;
@@ -16,16 +17,19 @@ class VerticalCardPager extends StatefulWidget {
   final PageSelectedCallback? onSelectedItem;
   final int initialPage;
   final ALIGN align;
-
+  final String fontFamily;
+  final Color color;
   // ignore: use_key_in_widget_constructors
-  const VerticalCardPager(
-      {required this.titles,
-      required this.images,
-      this.onPageChanged,
-      this.initialPage = 2,
-      this.onSelectedItem,
-      this.align = ALIGN.center, })
-      : assert(titles.length == images.length);
+  const VerticalCardPager({
+    required this.titles,
+    required this.images,
+    required this.color,
+    this.onPageChanged,
+    this.initialPage = 2,
+    this.onSelectedItem,
+    this.align = ALIGN.center,
+    required this.fontFamily,
+  }) : assert(titles.length == images.length);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -38,6 +42,9 @@ class _VerticalCardPagerState extends State<VerticalCardPager> {
   PageController? controller;
   late List<VideoPlayerController> _controller;
   late int pages;
+
+  final String fontFamily = 'Bevan';
+
   @override
   void initState() {
     super.initState();
@@ -97,12 +104,14 @@ class _VerticalCardPagerState extends State<VerticalCardPager> {
             CardControllerWidget(
               titles: widget.titles,
               images: widget.images,
+              color: widget.color,
               currentPostion: currentPosition,
               cardViewPagerHeight: constraints.maxHeight,
               cardViewPagerWidth: constraints.maxWidth,
               align: widget.align,
               pages: pages,
               controller: _controller,
+              fontFamily: fontFamily,
             ),
             Positioned.fill(
               child: PageView.builder(
@@ -113,6 +122,7 @@ class _VerticalCardPagerState extends State<VerticalCardPager> {
                   pages == index
                       ? _controller[index].play()
                       : _controller[index].pause();
+                      
 
                   return Container();
                 },
@@ -165,8 +175,8 @@ class _VerticalCardPagerState extends State<VerticalCardPager> {
   }
 
   double getWidth(maxHeight, i) {
-    double cardMaxWidth = maxHeight / 2;
-    return cardMaxWidth - 60 * (i - 2).abs();
+    double cardMaxWidth = maxHeight/2;
+    return cardMaxWidth - 60 * (i / 2).abs();
   }
 
   double? getHeight(maxHeight, i) {
@@ -186,8 +196,8 @@ double getCardPositionTop(double cardHeight, double viewHeight, int i) {
   int diff = (2 - i);
   int diffAbs = diff.abs();
 
-  double basePosition = (viewHeight / 2) - (cardHeight / 2);
-  double cardMaxHeight = viewHeight / 2;
+  double basePosition = (viewHeight / 2 ) - (cardHeight / 2);
+  double cardMaxHeight = viewHeight / 2 ;
 
   if (diffAbs == 0) {
     return basePosition;
@@ -214,6 +224,8 @@ class CardControllerWidget extends StatefulWidget {
   final double cardViewPagerHeight;
   final double? cardViewPagerWidth;
   final ALIGN? align;
+  final String fontFamily;
+  final Color color;
   final int pages;
   final List? titles;
   final List? images;
@@ -223,12 +235,14 @@ class CardControllerWidget extends StatefulWidget {
       {super.key,
       this.titles,
       this.images,
+      required this.fontFamily,
       this.cardViewPagerWidth,
       required this.cardViewPagerHeight,
       this.currentPostion,
       this.align,
       required this.pages,
-      required this.controller})
+      required this.controller,
+      required this.color})
       : cardMaxHeight = cardViewPagerHeight * (1 / 2),
         cardMaxWidth = cardViewPagerHeight * (1 / 2);
 
@@ -243,7 +257,7 @@ class _CardControllerWidgetState extends State<CardControllerWidget> {
 
     for (int i = 0; i < widget.images!.length; i++) {
       var cardWidth = max(
-          widget.cardMaxWidth - 60 * (widget.currentPostion! - i).abs(), 0.0);
+          widget.cardMaxWidth - 40 * (widget.currentPostion! - i).abs(), 0.0);
       var cardHeight = getCardHeight(i);
 
       var cardTop = getTop(cardHeight, widget.cardViewPagerHeight, i);
@@ -260,10 +274,16 @@ class _CardControllerWidgetState extends State<CardControllerWidget> {
               children: <Widget>[
                 Positioned.fill(
                     child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(10),
                         child: VideoPlayer(widget.controller[i]))),
                 Align(
-                    child: PrimaryTextWidget(title: widget.titles![i], fontsize: getFontSize(i)) )
+                  child: PrimaryTextWidget(
+                    title: widget.titles![i],
+                    fontsize: getFontSize(i),
+                    color: widget.color,
+                    style: GoogleFonts.bevan(color: widget.color),
+                  ),
+                ),
               ],
             ),
           ),

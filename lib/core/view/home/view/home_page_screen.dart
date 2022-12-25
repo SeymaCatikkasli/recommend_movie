@@ -21,22 +21,21 @@ class _HomePageScreenState extends State<HomePageScreen> {
       child: Column(
         children: [
           const Padding(
-            padding: EdgeInsets.all(14.0),
+            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
             child: PrimaryTextWidget(
               title: title1,
-              fontsize: 30,
+              fontsize: 28,
+              color: Colors.black,
             ),
           ),
           Expanded(
             child: VerticalCardPager(
               titles: titles,
-              
               images: movie,
-              onPageChanged: (page) {
-               
-              },
+              fontFamily: 'Bevan',
+              onPageChanged: (page) {},
               onSelectedItem: (index) {
-               Navigator.of(context).push(
+                Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (ctx) => MovieDetailScreen(
                       movieModel: movies[index],
@@ -44,9 +43,14 @@ class _HomePageScreenState extends State<HomePageScreen> {
                   ),
                 );
               },
+              color: Colors.white,
             ),
           ),
         ],
+        
+
+
+
       ),
     );
   }
