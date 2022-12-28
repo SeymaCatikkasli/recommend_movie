@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:recommend_movie/core/view/home/view/home_page.dart';
+import 'package:recommend_movie/core/view/shorts/widget/loading_screen.dart';
 
 import '../../../components/vertical_card_pager/Model/model_vertical_card_pager.dart';
 import '../widgets/vertical_card_pager.dart';
 import '../../../components/text/primary_text.dart';
-import '../../movie_detail.dart/model/dummy_data.dart';
-import '../../movie_detail.dart/view/movie_detail.dart';
 
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key});
@@ -35,13 +34,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
               fontFamily: 'Bevan',
               onPageChanged: (page) {},
               onSelectedItem: (index) {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (ctx) => MovieDetailScreen(
-                      movieModel: movies[index],
-                    ),
-                  ),
-                );
+               Navigator.push(context,MaterialPageRoute(builder:(context)=>const LoadingScreen() ) );
               },
               color: Colors.white,
             ),

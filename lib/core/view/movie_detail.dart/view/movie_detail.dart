@@ -22,14 +22,14 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 36, 33, 44),
+        backgroundColor:  Colors.white,
         extendBodyBehindAppBar: true,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           title: Text(
             widget.movieModel.name,
             style: const TextStyle(
-              color: Colors.amber,
+              color: Colors.white,
               
             ),
           ),
@@ -52,13 +52,13 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     const _MovieInfoCard(
                       child: Text(
                         '18+',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.black),
                       ),
                     ),
                   _MovieInfoCard(
                     child: Text(
                       getTextByCategry(widget.movieModel.movieCategry),
-                      style: const TextStyle(color: Colors.red),
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
                   _MovieInfoCard(
@@ -67,7 +67,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                         const Icon(
                           Icons.star,
                           size: 16,
-                          color: Color.fromARGB(255, 214, 187, 143),
+                          color: Colors.yellow,
                         ),
                         const SizedBox(width: 5),
                         Text(
@@ -82,14 +82,14 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     onPressed: () {},
                     icon: const Icon(
                       Icons.add_box_rounded,
-                      color: Colors.white,
+                      color: Colors.red,
                     ),
                   ),
                   IconButton(
                     onPressed: () {},
                     icon: const Icon(
                       Icons.share,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                   ),
                 ],
@@ -104,7 +104,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                 child: Text(
                   widget.movieModel.name,
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontWeight: FontWeight.bold,
                     fontSize: 22,
                   ),
@@ -120,7 +120,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                 child: Text(
                   widget.movieModel.desc,
                   style: const TextStyle(
-                    color: Colors.grey,
+                    color: Colors.black38,
                     fontSize: 14,
                   ),
                 ),
@@ -135,7 +135,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                 child: Text(
                   'Actors',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontWeight: FontWeight.bold,
                     fontSize: 22,
                   ),
@@ -216,7 +216,7 @@ class _MovieInfoCard extends StatelessWidget {
       ),
       margin: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: Colors.grey[850],
+        color: Colors.red,
         borderRadius: BorderRadius.circular(5),
         boxShadow: const [
           BoxShadow(
@@ -257,7 +257,7 @@ class _HeaderDelegate extends SliverPersistentHeaderDelegate {
                   image: AssetImage(movieModel.coverUrl),
                   fit: BoxFit.cover,
                   colorFilter: const ColorFilter.mode(
-                    Colors.black38,
+                    Colors.black26,
                     BlendMode.darken,
                   ),
                 ),

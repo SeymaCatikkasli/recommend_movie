@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recommend_movie/core/view/home/view/home_page_screen.dart';
-import 'package:recommend_movie/core/view/settings/view/setting_screen.dart';
+import 'package:recommend_movie/core/view/saved_screen/view/saved_screen.dart';
 import 'package:diamond_bottom_bar/diamond_bottom_bar.dart';
 
 import '../../Shorts/view/shorts_screen.dart';
@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
           centerIcon: Icons.movie_filter_outlined,
           selectedIndex: _selectedIndex,
           onItemPressed: onItemPressed),
-      backgroundColor: const Color.fromARGB(255, 254, 206, 221),
+      backgroundColor:  Colors.white,
       body: _selectedWidget,
     );
   }
@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
         _selectedWidget= const ShortScreen();
     }
     else if(index==2){
-       _selectedWidget=const SettingScreen();
+       _selectedWidget=const SavedScreen();
     }
   });
 }

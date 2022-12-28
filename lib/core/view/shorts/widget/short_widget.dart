@@ -1,7 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:video_player/video_player.dart';
+
+import '../../../components/text/primary_text.dart';
 
 typedef PageChangedCallback = void Function(double? page);
 typedef PageSelectedCallback = void Function(int index);
@@ -18,27 +21,35 @@ class ShortCardPager extends StatefulWidget {
   final ALIGN align;
 
   // ignore: use_key_in_widget_constructors
-  const ShortCardPager(
-      {required this.titles,
-      required this.images,
-      this.onPageChanged,
-      this.textStyle,
-      this.initialPage = 2,
-      this.onSelectedItem,
-      this.align = ALIGN.center,})
-      : assert(titles.length == images.length);
+  const ShortCardPager({
+    required this.titles,
+    required this.images,
+    this.onPageChanged,
+    this.textStyle,
+    this.initialPage = 2,
+    this.onSelectedItem,
+    this.align = ALIGN.center,
+  }) : assert(titles.length == images.length);
 
   @override
   // ignore: library_private_types_in_public_api
   _ShortCardPagerState createState() => _ShortCardPagerState();
 }
 
-class _ShortCardPagerState extends State<ShortCardPager> {
+class _ShortCardPagerState extends State<ShortCardPager>
+    with TickerProviderStateMixin {
   bool isScrolling = false;
   double? currentPosition;
   PageController? controller;
   late List<VideoPlayerController> _controller;
   late int pages;
+  late AnimationController _animationController;
+
+
+  bool isReadmore = false;
+  List<bool> isClick = [];
+  List<bool> isShow = [];
+
   @override
   void initState() {
     super.initState();
@@ -46,6 +57,8 @@ class _ShortCardPagerState extends State<ShortCardPager> {
     pages = widget.initialPage;
     currentPosition = widget.initialPage.toDouble();
     controller = PageController(initialPage: widget.initialPage);
+    _animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 6));
 
     controller!.addListener(() {
       setState(() {
@@ -57,14 +70,41 @@ class _ShortCardPagerState extends State<ShortCardPager> {
       });
     });
     for (var i = 0; i < widget.images.length; i++) {
+         isShow.add(false);
+         isClick.add(true);
       _controller.add(widget.images[i]
-      ..setLooping(true)
+        ..setLooping(true)
         ..initialize().then((_) {
           // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
           setState(() {});
         }));
     }
   }
+
+  @override
+  void dispose() {
+    for (var i = 0; i < widget.images.length; i++) {
+      _controller[i].pause();
+    }
+    super.dispose();
+    _animationController.dispose();
+  }
+
+  _handlePlayAnimation(int index) {
+      isShow[index]=true;
+      isClick[index]=false;
+    _animationController.forward();
+      Future.delayed(const Duration(milliseconds: 1900),
+          (() {
+            setState(() {
+               isShow[index]=false;
+             _animationController.reverse();
+
+            });
+            
+          }));
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -88,33 +128,111 @@ class _ShortCardPagerState extends State<ShortCardPager> {
             } else if (selectedIndex >= 0) {
               int goToPage = currentPosition!.toInt() + selectedIndex - 2;
               controller!.animateToPage(goToPage,
-                  duration: const Duration(milliseconds: 300),
+                  duration: const Duration(seconds: 5),
                   curve: Curves.easeInOutExpo);
             }
           }
         },
         child: Stack(
           children: [
-         
             Positioned.fill(
               child: PageView.builder(
                 scrollDirection: Axis.vertical,
                 itemCount: widget.images.length,
                 controller: controller,
                 itemBuilder: (context, index) {
+                   
                   pages == index
                       ? _controller[index].play()
                       : _controller[index].pause();
+                   
 
-             
-                  return VideoPlayer(_controller[index]);
+                  return GestureDetector(
+                    onDoubleTap: () => setState(() {
+                      _handlePlayAnimation(index);
+                    }),
+                    child: Stack(
+                      alignment: AlignmentDirectional.bottomEnd,
+                      children: [
+                        VideoPlayer(_controller[index]),
+                      isShow[index] ?  Center(
+                            child: Lottie.asset('assets/animation/love_t.json',
+                                controller: _animationController,
+                                repeat: false)):const SizedBox.shrink(),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    isClick[index] = !isClick[index];
+                                  });
+                                },
+                                icon: (isClick[index]
+                                    ? const Icon(Icons.favorite_outline)
+                                    : const Icon(Icons.favorite)),
+                                color: (isClick[index] ? Colors.white : Colors.pink)),
+                          
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.send_outlined),
+                              color: Colors.white,
+                            ),
+                            IconButton(
+                                onPressed: () {},
+                                icon: const Icon(
+                                  Icons.linear_scale_outlined,
+                                  color: Colors.white,
+                                ))
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 25.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              PrimaryTextWidget(
+                                  title: widget.titles[index], fontsize: 22),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 15.0),
+                                child: Column(
+                                  children: [
+                                    TextButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          isReadmore = !isReadmore;
+                                        });
+                                      },
+                                      child: buildText(
+                                        'Wednesday,yeni ortaya çıkan medyumluk yeteneğinde ustalaşmaya çalışacak, kasabada dehşet saçan kanlı bir cinayet serisini önleyecek ve 25 yıl önce ebeveynlerinin karıştığı doğaüstü bir gizemi çözecek. Üstelik tüm bunları yaparken okulda kurduğu yeni ve karmakarışık ilişkilerde yolunu bulmaya çalışacak.',
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
                 },
               ),
-            )
+            ),
           ],
         ),
       );
     });
+  }
+
+  Widget buildText(
+    String text,
+  ) {
+    final lines = isReadmore ? null : 1;
+    return Text(text,
+        style: const TextStyle(fontSize: 15, color: Colors.white),
+        maxLines: lines,
+        overflow: isReadmore ? TextOverflow.visible : TextOverflow.ellipsis);
   }
 
   int onTapUp(context, maxHeight, maxWidth, details) {
@@ -256,20 +374,20 @@ class _CardControllerWidgetState extends State<CardControllerWidget> {
         child: Opacity(
           opacity: getOpacity(i),
           child: SizedBox(
-            width: cardWidth,
-            height: cardHeight,
-            child: Stack(
-              children: <Widget>[
-                Positioned.fill(child: VideoPlayer(widget.controller[i])),
-                Align(
-                    child: Text(
-                  widget.titles![i],
-                  style: titleTextStyle!.copyWith(fontSize: getFontSize(i)),
-                  textAlign: TextAlign.center,
-                )),
-              ],
-            ),
-          ),
+              width: cardWidth,
+              height: cardHeight,
+              child: Stack(
+                alignment: AlignmentDirectional.centerEnd,
+                children: [
+                  Positioned.fill(child: VideoPlayer(widget.controller[i])),
+                  Align(
+                      child: Text(
+                    widget.titles![i],
+                    style: titleTextStyle!.copyWith(fontSize: getFontSize(i)),
+                    textAlign: TextAlign.center,
+                  )),
+                ],
+              )),
         ),
       );
 

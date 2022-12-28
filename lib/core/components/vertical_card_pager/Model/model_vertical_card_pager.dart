@@ -19,7 +19,7 @@ const String boxfit = 'fill';
 
 final List<VideoPlayerController> movie = [
   VideoPlayerController.asset('assets/video/video.mov'),
-  VideoPlayerController.asset('assets/video/video2.mp4'),
+  VideoPlayerController.asset('assets/video/video.mov'),
   VideoPlayerController.asset('assets/video/video.mov'),
   VideoPlayerController.asset('assets/video/video.mov'),
   VideoPlayerController.asset('assets/video/video.mov'),

@@ -71,7 +71,15 @@ class _VerticalCardPagerState extends State<VerticalCardPager> {
         }));
     }
   }
+@override
+  void dispose() {
+     for (var i = 0; i < widget.images.length; i++) {
+      _controller[i].pause();
+     
+    }
 
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
